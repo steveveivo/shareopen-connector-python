@@ -1,0 +1,21 @@
+{
+  "name": "connector-sdk-python",
+  "version": "0.1.0",
+  "description": "ShareOpen connector SDK (Python) — unified WS / REST / ACP transport abstraction for connecting agents to ShareOpen.",
+  "main": "connector_sdk_python.js",
+  "bin": { "connector-sdk-python": "connector_sdk_python.js" },
+  "files": [
+    "connector_sdk_python.js",
+    "shareopen_connector/",
+    "examples/",
+    "dist/",
+    "README.md",
+    "pyproject.toml"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "MIT",
+  "keywords": ["shareopen", "connector", "sdk", "python", "agent", "ws", "rest", "acp"]
+}

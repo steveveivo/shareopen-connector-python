@@ -1,0 +1,15 @@
+[project]
+name = "shareopen-connector"
+version = "0.1.0"
+description = "ShareOpen connector SDK — unified WS / REST / ACP transport abstraction for connecting agents to ShareOpen."
+requires-python = ">=3.9"
+license = { text = "MIT" }
+
+dependencies = []
+
+[project.optional-dependencies]
+ws = ["websockets>=12"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
