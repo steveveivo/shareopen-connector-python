@@ -115,6 +115,10 @@ class RestTransport:
             {"frame": "typing", "event_id": f"evt_typing_{int(time.time()*1000)}"}
         )
 
+    # [align 2026-11-17] REST 无 progress 通道 v1 — no-op (WS 侧车才用 progress 帧)。
+    async def send_progress(self, frame: dict) -> Any:
+        return None
+
     async def send_command_register(self, frame: dict) -> Any:
         return None  # slash menus are a WS/ACP feature
 

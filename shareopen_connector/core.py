@@ -102,6 +102,16 @@ class ShareOpenConnector:
                     "is_final": False,
                 }
             )
+        # [align 2026-11-17] 收尾帧发空 chunk + is_final (host 侧车 streamer.finish() 同款契约):
+        # 前端 stream 气泡靠 is_final 接管为完整 new_message; 缺它气泡永远停在 'streaming'。
+        await self.transport.send_stream_chunk(
+            {
+                "conversation_id": conversation_id,
+                "content": "",
+                "message_id": message_id,
+                "is_final": True,
+            }
+        )
         await self.transport.send_chat(
             {
                 "conversation_id": conversation_id,
@@ -111,6 +121,13 @@ class ShareOpenConnector:
                 "receiver_id": opts.get("receiver_id"),
                 "receiver_type": opts.get("receiver_type", "human"),
             }
+        )
+
+    # [align 2026-11-17] 工具执行进度帧 (对齐 Node SDK progress 方法):
+    # 后端 handleProgressUpdate 契约 {conversation_id, progress, status}。
+    async def progress(self, conversation_id: str, progress: str, status: str = "in_progress") -> Any:
+        return await self.transport.send_progress(
+            {"conversation_id": conversation_id, "progress": progress, "status": status}
         )
 
     async def typing(self, conversation_id: str, on: bool = True) -> Any:

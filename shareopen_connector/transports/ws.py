@@ -129,11 +129,25 @@ class WsTransport:
         obj = {
             "type": "stream_chunk",
             "conversation_id": frame.get("conversation_id"),
+            # [align 2026-11-17] 双字段: 后端 host/原生侧车契约收 `chunk`, SDK 侧发 `content`。
+            # 两字段同帧发出, 后端 handleStreamingChunk 取 msg.chunk ?? msg.content —— 新旧后端都通。
+            "chunk": frame.get("chunk") if frame.get("chunk") is not None else frame.get("content"),
             "content": frame.get("content"),
             "message_id": frame.get("message_id"),
         }
         if frame.get("is_final"):
             obj["is_final"] = True
+        self._send_raw(obj)
+
+    # [align 2026-11-17] 工具执行进度帧: 后端 handleProgressUpdate 契约
+    # {conversation_id, progress, status} (progress 必须 truthy 否则被丢弃)。
+    async def send_progress(self, frame: dict) -> Any:
+        obj = {
+            "type": "progress_update",
+            "conversation_id": frame.get("conversation_id"),
+            "progress": frame.get("progress"),
+            "status": frame.get("status") or "in_progress",
+        }
         self._send_raw(obj)
 
     async def send_typing(self, frame: dict) -> Any:

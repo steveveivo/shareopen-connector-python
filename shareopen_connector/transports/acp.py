@@ -159,6 +159,10 @@ class AcpTransport:
     async def send_typing(self, frame: dict) -> Any:
         return None
 
+    # [align 2026-11-17] ACP 无 progress 通道 v1 — no-op。
+    async def send_progress(self, frame: dict) -> Any:
+        return None
+
     async def send_command_register(self, frame: dict) -> Any:
         return None
 
